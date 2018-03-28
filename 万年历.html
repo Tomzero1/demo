@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    div {
+      width: 700px;
+      height: 500px;
+      background: url("http://img01.taopic.com/170912/240494-1F9120Q31373.jpg") no-repeat center center;
+      background-size: 100% 100%;
+      margin: auto;
+    }
+    nav {
+      height: 50px;
+      line-height: 50px;
+      text-align: center;
+    }
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .week {
+      width: 100%;
+      height: 50px;
+    }
+    .week>li {
+      width: 70px;
+      padding: 0 5px;
+      margin: 0 10px;
+      line-height: 50px;
+      border-radius: 50%;
+      background: white;
+      text-align: center;
+      float: left;
+    }
+    .day {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    .day>li {
+      width: 70px;
+      padding: 0 5px;
+      margin: 0 10px;
+      margin-top: 15px;
+      line-height: 50px;
+      border-radius: 50%;
+      background: white;
+      text-align: center;
+      float: left;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <nav>
+      年:&nbsp;<select name="" id="">
+      </select>
+      月:&nbsp;<select name="" id="">
+      </select>
+      日:&nbsp;<select name="" id="">
+      </select>
+    </nav>
+    <ul class="week"></ul>
+    <ul class="day"></ul>
+  </div>
+  <script>
+    var set = document.querySelectorAll("select");
+    var week = document.querySelector(".week");
+    var day = document.querySelector(".day");
+    function init() {
+      var arr = ["星期日","星期一","星期二","星期三","星期四","星期五","星期六"];
+      for (var i = 0; i < arr.length; i++) {
+        var li = document.createElement("li");
+        li.innerHTML = arr[i];
+        week.appendChild(li);
+      };
+      for (var year = 1900; year <= 2100; year++) {
+        createOption(year, set[0]);
+      }
+      for (var month = 1; month <=12; month++) {
+        createOption(month, set[1])
+      }
+      var now  = new Date();
+      selectShow(now.getFullYear(), now.getMonth()+ 1, now.getDate());
+      dateColor();
+    }
+    init();
+    function selectShow(year, month, data) {
+      set[0].value = year;
+      set[1].value = month;
+      selectdate(year, month, data);
+    }
+    function selectdate(year, month, da) {
+      var d = new Date(year, month, 0);
+      var dd = new Date(year, month-1, 0);
+      var c = dd.getDay();
+      for (var j = 0; j <= c; j++) {
+        selectday(" ", day);
+      }
+      var date = d.getDate();
+      for (var i = 1; i <= date; i++) {
+        createOption(i, set[2]);
+        selectday(i, day);
+      }
+      select(da)
+    }
+    function select(text) {
+      set[2].value = text;
+    }
+    function selectday(day, parent) {
+      var li = document.createElement("li");
+      li.innerHTML = day;
+      parent.appendChild(li);
+      if (day == " ") {
+        li.style.opacity = 0;
+      }
+    }
+    function dateColor() {
+      var lis = document.querySelectorAll(".day>li");
+      var a;
+      for (var i = 1; i < lis.length; i++) {
+        a = lis[i].innerHTML;
+        if (set[2].value !== a) {
+          lis[i].style.background = "";
+        } else {
+          lis[i].style.background = "red";
+        }
+      }
+    }
+    set[2].onchange = function () {
+      dateColor();
+    }
+    function createOption(text, parent) {
+      var option = document.createElement("option");
+      option.innerHTML = text;
+      option.value = text;
+      parent.appendChild(option);
+    }
+  </script>
+</body>
+</html>
