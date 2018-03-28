@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    div {
+      position: absolute;
+      border-radius: 50%;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    for (var i = 0; i < 60; i++) {
+      randomBall();
+    }
+    function randomBall() {
+      var div = document.createElement("div"); // 生成元素
+      var size = randomInt(60, 80); // 随机元素大小
+      div.style.width = size + "px";
+      div.style.height = size + "px";
+      div.style.backgroundColor = `rgba( 
+        ${randomInt(0, 255)}, 
+        ${randomInt(0, 255)},
+        ${randomInt(0, 255)},
+        ${Math.random() * 0.6 + 0.4}
+      )`; // 字符串模板 生成随机rgba颜色
+      document.body.appendChild(div) // 把生成的元素添加到 body里面
+      var speedX = window.document.documentElement.clientWidth - div.offsetWidth; // 获取到元素运动的最大宽度
+      var speedY = window.document.documentElement.clientHeight - div.offsetHeight; // 获取到元素运动的最大高度
+      var left = randomInt(0, speedX); // 随机生成元素的left值
+      var top = randomInt(0, speedY); // 随机生成元素的top值
+      var speedx = randomInt(-20, 20); // 随机生成元素的运行速度
+      var speedy = randomInt(-20, 20);
+      div.style.left = left + "px"; 
+      div.style.top = top + "px";
+      setTimeout (function step() { // 让元素动起来
+          var offx = div.offsetLeft + speedx;
+          var offy = div.offsetTop + speedy;
+        if (offx <= 0) { 
+          speedx *= -1
+          offx = 0;
+        }
+        if (offx >= speedX) {
+          speedx *= -1;
+          offx = speedX;
+        }
+        if (offy <= 0) {
+          speedy *= -1;
+          offy = 0;
+        }
+        if (offy >= speedY) {
+          speedy *= -1;
+          offy = speedY;
+        }
+        div.style.left = offx + "px";
+        div.style.top = offy + "px";
+        setTimeout(step, 30)
+      }, 30)
+    }
+    function randomInt(from, to) { // 生成from ~ to 范围之间的随机数
+      return parseInt(Math.random() * (to - from + 1) + from)
+    }
+  </script>
+</body>
+</html>
