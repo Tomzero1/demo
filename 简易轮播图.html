@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    div {
+      width: 600px;
+      height: 400px;
+      margin: auto;
+      position: relative;
+      overflow: hidden;
+    }
+    ul {
+      width: 3000px;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    li {
+      width: 600px;
+      height: 100%;
+      float: left;
+    }
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <ul></ul>
+  </div>
+  <script>
+    var ul = document.querySelector("ul");// 获取元素
+    var arr = ["http://img.zcool.cn/community/01e44d5711c84f6ac72513437994cb.jpg@2o.jpg", "http://img3.redocn.com/tupian/20150430/mantenghuawenmodianshiliangbeijing_3924704.jpg","http://img07.tooopen.com/images/20170316/tooopen_sy_201956178977.jpg","http://img.zcool.cn/community/010f87596f13e6a8012193a363df45.jpg@2o.jpg","http://img.zcool.cn/community/01e44d5711c84f6ac72513437994cb.jpg@2o.jpg"];
+    for (var i = 0; i < arr.length; i++) { // 循环数组
+      var li = document.createElement("li"); // 生成li元素
+      var img = document.createElement("img"); // 生成img元素
+      img.src = arr[i]; // 设置img的图片
+      li.appendChild(img); // img添加到li里面
+      ul.appendChild(li);  // li添加到ul里面
+    }
+    var time;
+    setTimeout(function step() {
+      ul.style.left = ul.offsetLeft - 8 + "px";
+      if (ul.offsetLeft == -2400) {// 当到了最后一张图 回到第一张图
+        ul.style.left = 0 + "px";
+      }
+      if (ul.offsetLeft % 600 == 0) { // 每过一张图 停留两秒
+        time = 2000;
+      } else {
+        time = 20;
+      }
+      setTimeout(step, time)// 重复调用定时器
+    }, 0)
+  </script>
+</body>
+</html>
