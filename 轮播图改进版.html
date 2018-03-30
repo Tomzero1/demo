@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .wrap {
+      width: 600px;
+      height: 400px;
+      margin: auto;
+      position: relative;
+      overflow: hidden;
+    }
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .banner {
+      width: 3000px;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    .banner li {
+      width: 600px;
+      height: 100%;
+      float: left;
+    }
+    .banner li img {
+      width: 100%;
+      height: 100%;
+    }
+    .indicator {
+      width: 200px;
+      height: 40px;
+      position: absolute;
+      bottom: 40px;
+      right: 40px;
+      border-radius: 20px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .indicator li {
+      width: 40px;
+      height: 40px;
+      background: white;
+      border-radius: 50%;
+      line-height: 40px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .on {
+      background: red !important;
+    }
+    .wrap:hover .prev {
+      opacity: 0.6;
+    }
+    .wrap:hover .next {
+      opacity: 0.6;
+    }
+    .prev,.next {
+      width: 50px;
+      height: 80px;
+      background: url("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1522320544143&di=7165789c7aea3121230de18cabdb242d&imgtype=jpg&src=http%3A%2F%2Fimg2.imgtn.bdimg.com%2Fit%2Fu%3D3193536197%2C3087924222%26fm%3D214%26gp%3D0.jpg") no-repeat center center;
+      position: absolute;
+      background-size: 100% 100%;
+      z-index: 2;
+      top: 50%;
+      cursor: pointer;
+      opacity: 0.3;
+      transition: all 0.5s;
+    }
+    .prev {
+      left: 20px;
+      transform: rotateZ(180deg) translateY(50%);
+    }
+    .next {
+      right: 20px;
+      transform: translateY(-50%);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <ul class="banner"></ul>
+    <ul class="indicator"></ul>
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+  <script>
+    var wrap = document.querySelector(".wrap")
+    var ban = document.querySelector(".banner");
+    var ind = document.querySelector(".indicator");
+    var prev = document.querySelector(".prev");
+    var next = document.querySelector(".next");
+    var arr = ["http://img.zcool.cn/community/01e44d5711c84f6ac72513437994cb.jpg@2o.jpg", "http://img3.redocn.com/tupian/20150430/mantenghuawenmodianshiliangbeijing_3924704.jpg","http://img07.tooopen.com/images/20170316/tooopen_sy_201956178977.jpg","http://img.zcool.cn/community/010f87596f13e6a8012193a363df45.jpg@2o.jpg","http://img.zcool.cn/community/01e44d5711c84f6ac72513437994cb.jpg@2o.jpg"];
+    function init() {
+      for (var i = 0; i < arr.length; i++) {
+      banner(arr[i], ban);
+      indicator(i + 1, ind);
+      }
+      function banner(text, parent) {
+        var li = document.createElement("li");
+        var img = document.createElement("img");
+        img.src = text;
+        li.appendChild(img);
+        parent.appendChild(li);
+      }
+      function indicator(text, parent) {
+        if (text < 5) {
+          var li = document.createElement("li");
+          li.innerHTML = text;
+          parent.appendChild(li);
+        }
+      }
+      play();
+    }
+    init();
+    function animation(offset) {
+      var newleft = ban.offsetLeft + offset;
+      ban.style.left =  newleft + "px";
+      if (newleft < -2400) {
+        ban.style.left = -600 + "px";
+      }
+      if (newleft > 0) {
+        ban.style.left = -1800 + "px";
+      }
+    }
+    var time;
+    function play() {
+      time = setInterval(function () {
+        next.onclick();
+      }, 2000)
+    }
+    wrap.onmouseover = function () {
+        clearInterval(time)
+    }
+    wrap.onmouseleave = function () {
+      play();
+    }
+    var index = 0;
+    var button = document.querySelectorAll(".indicator li");
+    function buttonShow() {
+      for (var i = 0; i < button.length; i++) {
+        if (button[i].className = "on") {
+            button[i].className = "";
+        }
+      }
+      button[index].className = "on";
+    }
+    buttonShow();
+    for (var i = 0; i < button.length; i++) {
+      (function (i) {
+        button[i].onclick = function () {
+          var clickIndex = button[i].innerHTML -1;
+          var offset = 600 * (index - clickIndex);
+          animation(offset);
+          index = clickIndex;
+          buttonShow();
+        }
+      })(i);
+    }
+    prev.onclick = function () {
+      index -= 1;
+      if (index < 0) {
+        index = 3;
+      }
+      animation(600)
+      buttonShow();
+    }
+    next.onclick = function () {
+      index += 1;
+      if (index > 3) {
+        index = 0;
+      }
+      animation(-600)
+      buttonShow();
+    }
+  </script>
+</body>
+</html>
